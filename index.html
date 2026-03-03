@@ -14,6 +14,14 @@ body{
     text-align:center;
 }
 
+.versao{
+    position:fixed;
+    top:5px;
+    right:8px;
+    font-size:10px;
+    color:#64748b;
+}
+
 .container{
     max-width:420px;
     margin:auto;
@@ -23,13 +31,7 @@ body{
 .titulo{
     font-size:22px;
     font-weight:bold;
-    margin-top:10px;
-    margin-bottom:5px;
-}
-
-.subtitulo{
-    font-size:16px;
-    margin-bottom:10px;
+    margin-top:15px;
 }
 
 .meta-box{
@@ -84,6 +86,13 @@ input{
     margin-top:10px;
 }
 
+.status-aviso{
+    background:#f59e0b;
+    padding:10px;
+    border-radius:10px;
+    margin-top:10px;
+}
+
 button{
     margin-top:12px;
     padding:8px 15px;
@@ -103,33 +112,34 @@ button{
 
 <body>
 
+<div class="versao">v1.0</div>
+
 <div class="container">
 
 <div class="titulo">💼 Fechamento de Caixa</div>
-<div class="subtitulo">Total Relatório</div>
 
 <div class="meta-box">
-<input type="text" id="meta" placeholder="Digite o valor total esperado" oninput="calcular()">
+<input type="text" id="meta" placeholder="Total Relatório" oninput="calcular()" inputmode="decimal">
 </div>
 
 <div class="grid">
 <div class="box">Cartão
-<input type="text" id="c" oninput="calcular()"></div>
+<input type="text" id="c" oninput="calcular()" inputmode="decimal"></div>
 
 <div class="box">PIX
-<input type="text" id="p" oninput="calcular()"></div>
+<input type="text" id="p" oninput="calcular()" inputmode="decimal"></div>
 
 <div class="box">Dinheiro
-<input type="text" id="d" oninput="calcular()"></div>
+<input type="text" id="d" oninput="calcular()" inputmode="decimal"></div>
 
 <div class="box">Depósito
-<input type="text" id="dep" oninput="calcular()"></div>
+<input type="text" id="dep" oninput="calcular()" inputmode="decimal"></div>
 
 <div class="box">Pix Chave
-<input type="text" id="pc" oninput="calcular()"></div>
+<input type="text" id="pc" oninput="calcular()" inputmode="decimal"></div>
 
 <div class="box">Faturar
-<input type="text" id="f" oninput="calcular()"></div>
+<input type="text" id="f" oninput="calcular()" inputmode="decimal"></div>
 </div>
 
 <div class="total">
@@ -147,13 +157,38 @@ Programado e criado por Eduardo Teixeira
 </div>
 
 <script>
+
+// Máscara e conversão brasileira
 function converter(valor){
     if(!valor) return 0;
     valor = valor.replace(/\./g,'').replace(',','.');
     return parseFloat(valor) || 0;
 }
 
+// Formatar para padrão BR
+function formatarBR(valor){
+    return valor.toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+// Salvar dados automaticamente
+function salvar(){
+    document.querySelectorAll("input").forEach(input=>{
+        localStorage.setItem(input.id,input.value);
+    });
+}
+
+// Restaurar dados ao abrir
+window.onload=function(){
+    document.querySelectorAll("input").forEach(input=>{
+        input.value=localStorage.getItem(input.id) || "";
+    });
+    calcular();
+}
+
 function calcular(){
+
+salvar();
+
 let meta=converter(document.getElementById("meta").value);
 let c=converter(document.getElementById("c").value);
 let p=converter(document.getElementById("p").value);
@@ -164,31 +199,34 @@ let f=converter(document.getElementById("f").value);
 
 let total=c+p+d+dep+pc+f;
 
-document.getElementById("total").innerText=
-total.toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2});
+document.getElementById("total").innerText=formatarBR(total);
 
 let statusDiv=document.getElementById("status");
 
-if(meta===0){
-statusDiv.innerHTML="";
+if(!meta){
+statusDiv.innerHTML="<div class='status-aviso'>⚠️ Defina o Total Relatório primeiro</div>";
 return;
 }
 
-if(total===meta){
+// Comparação com tolerância (evita erro por centavos invisíveis)
+if(Math.abs(total - meta) < 0.01){
 statusDiv.innerHTML="<div class='status-ok'>✅ Tudo certo 👍 Aura + Ego</div>";
 }
 else if(total<meta){
-let diferenca=(meta-total).toLocaleString('pt-BR',{minimumFractionDigits:2});
+let diferenca=formatarBR(meta-total);
 statusDiv.innerHTML="<div class='status-erro'>❌ Falta R$ "+diferenca+" 👎 olha direito aí</div>";
 }
 else{
-let diferenca=(total-meta).toLocaleString('pt-BR',{minimumFractionDigits:2});
+let diferenca=formatarBR(total-meta);
 statusDiv.innerHTML="<div class='status-erro'>😒 Tá sobrando R$ "+diferenca+" — tem coisa errada aí irmão</div>";
 }
 }
 
 function limpar(){
-document.querySelectorAll("input").forEach(i=>i.value="");
+document.querySelectorAll("input").forEach(i=>{
+    i.value="";
+    localStorage.removeItem(i.id);
+});
 document.getElementById("total").innerText="0,00";
 document.getElementById("status").innerHTML="";
 }
