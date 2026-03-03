@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fechamento</title>
+<style>
+body{font-family:Arial;background:#f2f2f2;padding:15px;text-align:center;}
+.box{background:white;padding:15px;margin:10px;border-radius:10px;}
+input{width:90%;padding:10px;font-size:18px;text-align:center;}
+.total{background:#27ae60;color:white;font-size:22px;font-weight:bold;}
+button{padding:10px 20px;font-size:16px;background:#e74c3c;color:white;border:none;border-radius:8px;}
+</style>
+</head>
+<body>
+
+<h1>Fechamento de Caixa</h1>
+
+<div class="box"><h3>Cartão</h3>
+<input type="number" id="c" oninput="s()"></div>
+
+<div class="box"><h3>PIX</h3>
+<input type="number" id="p" oninput="s()"></div>
+
+<div class="box"><h3>Dinheiro</h3>
+<input type="number" id="d" oninput="s()"></div>
+
+<div class="box"><h3>Depósito</h3>
+<input type="number" id="dep" oninput="s()"></div>
+
+<div class="box"><h3>Pix Chave</h3>
+<input type="number" id="pc" oninput="s()"></div>
+
+<div class="box"><h3>Faturar</h3>
+<input type="number" id="f" oninput="s()"></div>
+
+<div class="box total">
+Total: R$ <span id="r">0.00</span>
+</div>
+
+<button onclick="l()">Limpar</button>
+
+<script>
+function s(){
+let c=parseFloat(document.getElementById("c").value)||0;
+let p=parseFloat(document.getElementById("p").value)||0;
+let d=parseFloat(document.getElementById("d").value)||0;
+let dep=parseFloat(document.getElementById("dep").value)||0;
+let pc=parseFloat(document.getElementById("pc").value)||0;
+let f=parseFloat(document.getElementById("f").value)||0;
+document.getElementById("r").innerText=(c+p+d+dep+pc+f).toFixed(2);
+}
+function l(){
+document.querySelectorAll("input").forEach(i=>i.value="");
+document.getElementById("r").innerText="0.00";
+}
+</script>
+
+</body>
+</html>
