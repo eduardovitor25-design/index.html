@@ -109,31 +109,31 @@ button{
 <div class="subtitulo">Total Relatório</div>
 
 <div class="meta-box">
-<input type="number" id="meta" placeholder="Digite o valor total esperado" oninput="calcular()">
+<input type="text" id="meta" placeholder="Digite o valor total esperado" oninput="calcular()">
 </div>
 
 <div class="grid">
 <div class="box">Cartão
-<input type="number" id="c" oninput="calcular()"></div>
+<input type="text" id="c" oninput="calcular()"></div>
 
 <div class="box">PIX
-<input type="number" id="p" oninput="calcular()"></div>
+<input type="text" id="p" oninput="calcular()"></div>
 
 <div class="box">Dinheiro
-<input type="number" id="d" oninput="calcular()"></div>
+<input type="text" id="d" oninput="calcular()"></div>
 
 <div class="box">Depósito
-<input type="number" id="dep" oninput="calcular()"></div>
+<input type="text" id="dep" oninput="calcular()"></div>
 
 <div class="box">Pix Chave
-<input type="number" id="pc" oninput="calcular()"></div>
+<input type="text" id="pc" oninput="calcular()"></div>
 
 <div class="box">Faturar
-<input type="number" id="f" oninput="calcular()"></div>
+<input type="text" id="f" oninput="calcular()"></div>
 </div>
 
 <div class="total">
-Soma Caixa: R$ <span id="total">0.00</span>
+Soma Caixa: R$ <span id="total">0,00</span>
 </div>
 
 <div id="status"></div>
@@ -147,18 +147,25 @@ Programado e criado por Eduardo Teixeira
 </div>
 
 <script>
+function converter(valor){
+    if(!valor) return 0;
+    valor = valor.replace(/\./g,'').replace(',','.');
+    return parseFloat(valor) || 0;
+}
+
 function calcular(){
-let meta=parseFloat(document.getElementById("meta").value)||0;
-let c=parseFloat(document.getElementById("c").value)||0;
-let p=parseFloat(document.getElementById("p").value)||0;
-let d=parseFloat(document.getElementById("d").value)||0;
-let dep=parseFloat(document.getElementById("dep").value)||0;
-let pc=parseFloat(document.getElementById("pc").value)||0;
-let f=parseFloat(document.getElementById("f").value)||0;
+let meta=converter(document.getElementById("meta").value);
+let c=converter(document.getElementById("c").value);
+let p=converter(document.getElementById("p").value);
+let d=converter(document.getElementById("d").value);
+let dep=converter(document.getElementById("dep").value);
+let pc=converter(document.getElementById("pc").value);
+let f=converter(document.getElementById("f").value);
 
 let total=c+p+d+dep+pc+f;
 
-document.getElementById("total").innerText=total.toFixed(2);
+document.getElementById("total").innerText=
+total.toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2});
 
 let statusDiv=document.getElementById("status");
 
@@ -171,18 +178,18 @@ if(total===meta){
 statusDiv.innerHTML="<div class='status-ok'>✅ Tudo certo 👍 Aura + Ego</div>";
 }
 else if(total<meta){
-let diferenca=(meta-total).toFixed(2);
+let diferenca=(meta-total).toLocaleString('pt-BR',{minimumFractionDigits:2});
 statusDiv.innerHTML="<div class='status-erro'>❌ Falta R$ "+diferenca+" 👎 olha direito aí</div>";
 }
 else{
-let diferenca=(total-meta).toFixed(2);
+let diferenca=(total-meta).toLocaleString('pt-BR',{minimumFractionDigits:2});
 statusDiv.innerHTML="<div class='status-erro'>😒 Tá sobrando R$ "+diferenca+" — tem coisa errada aí irmão</div>";
 }
 }
 
 function limpar(){
 document.querySelectorAll("input").forEach(i=>i.value="");
-document.getElementById("total").innerText="0.00";
+document.getElementById("total").innerText="0,00";
 document.getElementById("status").innerHTML="";
 }
 </script>
