@@ -1,3 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caixa Diário</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#0f172a;
+    color:white;
+    text-align:center;
+}
+
+.container{
+    max-width:420px;
+    margin:auto;
+    padding:15px;
+}
+
+h1{
+    margin:10px 0;
+    font-size:20px;
+}
+
+.meta-box{
+    background:#1e293b;
+    padding:12px;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.box{
+    background:#1e293b;
+    padding:10px;
+    border-radius:10px;
+    font-size:14px;
+}
+
+input{
+    width:100%;
+    padding:6px;
+    margin-top:5px;
+    font-size:15px;
+    text-align:center;
+    border:none;
+    border-radius:6px;
+}
+
+.total{
+    background:#334155;
+    padding:12px;
+    border-radius:12px;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+.status-ok{
+    background:#16a34a;
+    padding:10px;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+.status-erro{
+    background:#dc2626;
+    padding:10px;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+button{
+    margin-top:12px;
+    padding:8px 15px;
+    border:none;
+    border-radius:8px;
+    background:#3b82f6;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Total Relatório</h1>
+
+<div class="meta-box">
+<input type="number" id="meta" placeholder="Digite o valor total esperado" oninput="calcular()">
+</div>
+
+<div class="grid">
+<div class="box">Cartão
+<input type="number" id="c" oninput="calcular()"></div>
+
+<div class="box">PIX
+<input type="number" id="p" oninput="calcular()"></div>
+
+<div class="box">Dinheiro
+<input type="number" id="d" oninput="calcular()"></div>
+
+<div class="box">Depósito
+<input type="number" id="dep" oninput="calcular()"></div>
+
+<div class="box">Pix Chave
+<input type="number" id="pc" oninput="calcular()"></div>
+
+<div class="box">Faturar
+<input type="number" id="f" oninput="calcular()"></div>
+</div>
+
+<div class="total">
+Soma Caixa: R$ <span id="total">0.00</span>
+</div>
+
+<div id="status"></div>
+
+<button onclick="limpar()">Limpar</button>
+
+</div>
+
 <script>
 function calcular(){
 let meta=parseFloat(document.getElementById("meta").value)||0;
@@ -38,3 +168,6 @@ document.getElementById("total").innerText="0.00";
 document.getElementById("status").innerHTML="";
 }
 </script>
+
+</body>
+</html>
