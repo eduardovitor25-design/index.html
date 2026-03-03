@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Caixa Diário</title>
+<title>Fechamento de Caixa</title>
 
 <style>
 body{
@@ -20,9 +20,16 @@ body{
     padding:15px;
 }
 
-h1{
-    margin:10px 0;
-    font-size:20px;
+.titulo{
+    font-size:22px;
+    font-weight:bold;
+    margin-top:10px;
+    margin-bottom:5px;
+}
+
+.subtitulo{
+    font-size:16px;
+    margin-bottom:10px;
 }
 
 .meta-box{
@@ -92,7 +99,8 @@ button{
 
 <div class="container">
 
-<h1>Total Relatório</h1>
+<div class="titulo">💼 Fechamento de Caixa</div>
+<div class="subtitulo">Total Relatório</div>
 
 <div class="meta-box">
 <input type="number" id="meta" placeholder="Digite o valor total esperado" oninput="calcular()">
